@@ -83,13 +83,18 @@ export default class MapsController {
       })
     }
 
-    const forwardedProto = request.header('x-forwarded-proto') || ''
-    const protocolCandidate = forwardedProto.split(',')[0].trim() || request.protocol()
-    const protocol = ['http', 'https'].includes(protocolCandidate.toLowerCase())
-      ? protocolCandidate.toLowerCase()
-      : 'https'
+    const forwardedProtoRaw = request.header('x-forwarded-proto') || ''
+    const forwardedHostRaw = request.header('x-forwarded-host') || ''
 
-    const styles = await this.mapService.generateStylesJSON(request.host(), protocol)
+    const forwardedProto = forwardedProtoRaw.split(',')[0].trim().toLowerCase()
+    const protocol = forwardedProto === 'https' || forwardedProto === 'http' ? forwardedProto : 'https'
+
+    const host =
+      forwardedHostRaw.split(',')[0].trim() ||
+      request.header('host') ||
+      request.host()
+
+    const styles = await this.mapService.generateStylesJSON(host, protocol)
     return response.json(styles)
   }
 
