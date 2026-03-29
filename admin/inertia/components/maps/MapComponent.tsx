@@ -23,7 +23,8 @@ export default function MapComponent() {
           width: '100%',
           height: '100vh',
         }}
-        mapStyle={`${window.location.protocol}//${window.location.hostname}:${window.location.port}/api/maps/styles`}
+        // Use relative style endpoint to avoid forced http/https mismatch behind reverse proxies.
+        mapStyle="/api/maps/styles"
         mapLib={maplibregl}
         initialViewState={{
           longitude: -101,
