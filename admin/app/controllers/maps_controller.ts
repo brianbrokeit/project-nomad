@@ -85,11 +85,28 @@ export default class MapsController {
 
     const forwardedProtoRaw = request.header('x-forwarded-proto') || ''
     const forwardedHostRaw = request.header('x-forwarded-host') || ''
+    const refererRaw = request.header('referer') || ''
+
+    let refererProtocol = ''
+    let refererHost = ''
+    if (refererRaw) {
+      try {
+        const urlObj = new URL(refererRaw)
+        refererProtocol = urlObj.protocol.replace(':', '').toLowerCase()
+        refererHost = urlObj.host
+      } catch (e) {}
+    }
 
     const forwardedProto = forwardedProtoRaw.split(',')[0].trim().toLowerCase()
-    const protocol = forwardedProto === 'https' || forwardedProto === 'http' ? forwardedProto : 'https'
+    const protocol =
+      refererProtocol === 'https' || refererProtocol === 'http'
+        ? refererProtocol
+        : forwardedProto === 'https' || forwardedProto === 'http'
+          ? forwardedProto
+          : 'https'
 
     const host =
+      refererHost ||
       forwardedHostRaw.split(',')[0].trim() ||
       request.header('host') ||
       request.host()
