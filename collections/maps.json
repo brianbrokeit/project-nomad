@@ -11,10 +11,10 @@
       "language": "en",
       "resources": [
         { "id": "alaska", "title": "Alaska", "size_mb": 684 },
-        { "id": "california", "title": "California", "size_mb": 1130 },
+        { "id": "california", "title": "California", "size_mb": 3330 },
         { "id": "hawaii", "title": "Hawaii", "size_mb": 28 },
         { "id": "oregon", "title": "Oregon", "size_mb": 380 },
-        { "id": "washington", "title": "Washington", "size_mb": 467 }
+        { "id": "washington", "title": "Washingtons", "size_mb": 467 }
       ]
     },
     {
