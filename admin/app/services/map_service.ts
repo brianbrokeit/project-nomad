@@ -117,10 +117,11 @@ export class MapService implements IMapService {
     if (toDownload.length === 0) return null
 
     const downloadFilenames: string[] = []
-    const filename = `${resource.id}_${spec.data_version}.pmtiles`
-    const resourceUrl = `${spec.base_url}/${filename}`
-    
+
     for (const resource of toDownload) {
+      const filename = `${resource.id}_${spec.data_version}.pmtiles`
+      const resourceUrl = `${spec.base_url}/${filename}`
+
       const existing = await RunDownloadJob.getActiveByUrl(resourceUrl)
       if (existing) {
         logger.warn(`[MapService] Download already in progress for URL ${resourceUrl}, skipping.`)
