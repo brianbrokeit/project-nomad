@@ -164,13 +164,15 @@ export default class ServiceSeeder extends BaseSeeder {
   ]
 
   async run() {
-    const existingServices = await Service.query().select('service_name')
-    const existingServiceNames = new Set(existingServices.map((service) => service.service_name))
-
-    const newServices = ServiceSeeder.DEFAULT_SERVICES.filter(
-      (service) => !existingServiceNames.has(service.service_name)
-    )
-
-    await Service.createMany([...newServices])
+    for (const service of ServiceSeeder.DEFAULT_SERVICES) {
+      const existing = await Service.findBy('service_name', service.service_name)
+      if (existing) {
+        // Always sync container_config so storage paths stay correct across reinstalls/platform changes
+        existing.containerConfig = service.container_config ? JSON.parse(service.container_config) : null
+        await existing.save()
+      } else {
+        await Service.create(service)
+      }
+    }
   }
 }

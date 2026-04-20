@@ -297,6 +297,14 @@ export class SystemService {
         si.graphics(),
       ])
 
+      // Apply host CPU overrides when running inside Docker on macOS/Apple Silicon,
+      // where systeminformation reads the Linux VM's /proc/cpuinfo and returns no brand/manufacturer.
+      // These env vars are injected by the install script on macOS; they are never set on Linux.
+      if (env.get('HOST_CPU_MANUFACTURER')) cpu.manufacturer = env.get('HOST_CPU_MANUFACTURER')!
+      if (env.get('HOST_CPU_BRAND')) cpu.brand = env.get('HOST_CPU_BRAND')!
+      if (env.get('HOST_CPU_CORES')) cpu.cores = env.get('HOST_CPU_CORES')!
+      if (env.get('HOST_CPU_PHYSICAL_CORES')) cpu.physicalCores = env.get('HOST_CPU_PHYSICAL_CORES')!
+
       let diskInfo: NomadDiskInfoRaw | undefined
       let disk: NomadDiskInfo[] = []
 

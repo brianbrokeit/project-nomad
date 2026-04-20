@@ -61,4 +61,15 @@ export default await Env.create(new URL('../', import.meta.url), {
   |----------------------------------------------------------
   */
   NOMAD_API_URL: Env.schema.string.optional(),
+
+  /*
+  |----------------------------------------------------------
+  | Host hardware override — used on macOS/Apple Silicon where
+  | the container cannot read host CPU info via systeminformation
+  |----------------------------------------------------------
+  */
+  HOST_CPU_MANUFACTURER: Env.schema.string.optional(),
+  HOST_CPU_BRAND: Env.schema.string.optional(),
+  HOST_CPU_CORES: Env.schema.number.optional(),
+  HOST_CPU_PHYSICAL_CORES: Env.schema.number.optional(),
 })
